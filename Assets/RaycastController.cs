@@ -58,6 +58,8 @@ public class RaycastController : MonoBehaviour
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         RaycastHit hit;
 
+        GameController.instance.tembakPerRonde--;
+
         int layerMask = LayerMask.GetMask("BirdLayer");
         if (Physics.Raycast(ray, out hit, maxDistanceRay, layerMask))
         {
@@ -67,7 +69,11 @@ public class RaycastController : MonoBehaviour
             if (objName == "BirdAsset(Clone)")
             {
                 Destroy(hit.collider.gameObject);
-                spawnNewBird();
+                StartCoroutine(spawnNewBird());
+                
+                GameController.instance.tembakPerRonde = 3;
+                GameController.instance.playerScore++;
+                GameController.instance.roundScore++;
             }
         }
 
